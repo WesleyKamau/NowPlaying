@@ -17,7 +17,7 @@ RATE = 44100
 CHUNK = 1024
 RECORD_SECONDS = 10
 WAVE_OUTPUT_FILENAME = "output.wav"
-QUIET_THRESHOLD = 25  # Adjust this threshold as needed
+QUIET_THRESHOLD = 35  # Adjust this threshold as needed
 
 latest_song_info = None
 

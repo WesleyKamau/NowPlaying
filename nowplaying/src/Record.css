@@ -25,8 +25,8 @@
   }
   
   .spinning-record {
-    width: 300px; /* Adjust the size as needed */
-    height: 300px; /* Adjust the size as needed */
+    width: 50vw; /* Adjust the size as needed */
+    height: 50vw; /* Adjust the size as needed */
     animation: spin 10s linear infinite;
     z-index: -1;
   }
@@ -36,8 +36,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100px; /* Adjust the size as needed */
-    height: 100px; /* Adjust the size as needed */
+    width: 25vw; /* Adjust the size as needed */
+    height: 25vw; /* Adjust the size as needed */
   }
 
   
