@@ -1,9 +1,9 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import './Record.css';
 
-const Record = forwardRef(({ coverArtUrl, isVisible }, ref) => {
+const Record = ({ coverArtUrl, isVisible }) => {
   return (
-    <div ref={ref} className={`record-container ${isVisible ? 'visible' : 'hidden'}`}>
+    <div className={`record-container ${isVisible ? 'slide-in' : 'slide-out'}`}>
       <img
           src={coverArtUrl}
           alt="Album Cover"
@@ -12,10 +12,10 @@ const Record = forwardRef(({ coverArtUrl, isVisible }, ref) => {
       <img
         src={`${process.env.PUBLIC_URL}/record.png`}
         alt="Vinyl Record"
-        className="spinning-record z-0 "
+        className="spinning-record z-0"
       />
     </div>
   );
-});
+};
 
 export default Record;

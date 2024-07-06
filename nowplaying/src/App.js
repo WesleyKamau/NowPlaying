@@ -1,22 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Record from './Record';
 import './tailwind.css';
-
+import './App.css'; // Ensure to import the CSS file for full screen background
 
 const App = () => {
   const [coverArtUrl, setCoverArtUrl] = useState(null);
+  const [secondCoverArtUrl, setSecondCoverArtUrl] = useState(null); // Add a new state variable [1/2]
   const [isVisible, setIsVisible] = useState(false);
-  const recordRef = useRef(null);
+  const [useFirstCoverArt, setUseFirstCoverArt] = useState(true); // Add a new state variable [2/2]
   const vantaRef = useRef(null);
 
-  // Function to fetch latest song data
   const fetchLatestSong = () => {
     fetch('http://127.0.0.1:5000/latest_song')
       .then((response) => response.json())
       .then((data) => {
         if (data !== null) {
           setIsVisible(true);
-          setCoverArtUrl(data.cover_art_url);
+          if(coverArtUrl === null) {
+            setUseFirstCoverArt(true);
+            setCoverArtUrl(data.cover_art_url);
+          } else {
+            if(useFirstCoverArt) {
+              if(coverArtUrl !== data.cover_art_url) {
+                setUseFirstCoverArt(false);
+                setSecondCoverArtUrl(data.cover_art_url);
+              }
+            } else {
+              if(secondCoverArtUrl !== data.cover_art_url) {
+                setUseFirstCoverArt(true);
+                setCoverArtUrl(data.cover_art_url);
+              }
+            }
+          }
           console.log('Fetched data:', data);
           console.log('Cover art URL:', data.cover_art_url);
         } else {
@@ -29,7 +44,6 @@ const App = () => {
       });
   };
 
-  // Function to load Vanta effect
   const loadVanta = () => {
     if (window.VANTA && window.VANTA.FOG) {
       vantaRef.current.vantaEffect = window.VANTA.FOG({
@@ -51,10 +65,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchLatestSong(); // Initial fetch
-    const interval = setInterval(fetchLatestSong, 5000); // Fetch every 5 seconds
+    fetchLatestSong();
+    const interval = setInterval(fetchLatestSong, 5000);
 
-    // Load Vanta effect
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js';
     script.async = true;
@@ -65,17 +78,15 @@ const App = () => {
       if (vantaRef.current && vantaRef.current.vantaEffect) {
         vantaRef.current.vantaEffect.destroy();
       }
-      clearInterval(interval); // Cleanup interval on unmount
+      clearInterval(interval);
     };
   }, []);
 
   return (
-    <>
-      <div className="App min-h-screen flex justify-center items-center">
-        <Record coverArtUrl={coverArtUrl} isVisible={isVisible} ref={recordRef} />
-      </div>
-      <div ref={vantaRef} className="vanta-container" style={{ width: '100%', height: '100vh' }}></div>
-    </>
+    <div ref={vantaRef} className="vanta-container">
+      <Record coverArtUrl={coverArtUrl} isVisible={isVisible && useFirstCoverArt} />
+      <Record coverArtUrl={secondCoverArtUrl} isVisible={isVisible && !useFirstCoverArt} />
+    </div>
   );
 };
 

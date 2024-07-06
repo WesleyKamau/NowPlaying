@@ -18,6 +18,6 @@ code {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Ensure the Vanta.js fog effect is behind other content */
+  z-index: -2; /* Ensure the Vanta.js fog effect is behind other content */
 }
 
